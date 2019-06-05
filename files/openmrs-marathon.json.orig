@@ -1,0 +1,491 @@
+[
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "debezium/connect:0.9.5.Final",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 8083,
+                        "hostPort": 8083,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER"
+        },
+        "cpus": 1.0,
+        "dependencies": [
+            "/kafka",
+            "/mysql"
+        ],
+        "env": {
+            "BOOTSTRAP_SERVERS": "kafka:9092",
+            "CONFIG_STORAGE_TOPIC": "my_connect_configs",
+            "GROUP_ID": "1",
+            "OFFSET_STORAGE_TOPIC": "my_connect_offsets"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
+        "id": "connect",
+        "instances": 1,
+        "mem": 128,
+        "requirePorts": true
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "debezium/kafka:0.9.5.Final",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 9092,
+                        "hostPort": 9092,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER"
+        },
+        "cpus": 1.0,
+        "dependencies": [
+            "/zookeeper"
+        ],
+        "env": {
+            "CREATE_TOPICS": " \"input:1:3,output:1:3\"",
+            "ZOOKEEPER_CONNECT": "zookeeper:2181"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
+        "id": "kafka",
+        "instances": 1,
+        "mem": 128,
+        "requirePorts": true
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "confluentinc/cp-kafka-rest:5.2.1-1",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 8082,
+                        "hostPort": 8082,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER"
+        },
+        "cpus": 1.0,
+        "env": {
+            "KAFKA_REST_BOOTSTRAP_SERVERS": "kafka:9092",
+            "KAFKA_REST_HOST_NAME": "kafka-rest-proxy",
+            "KAFKA_REST_LISTENERS": "http://0.0.0.0:8082/",
+            "KAFKA_REST_SCHEMA_REGISTRY_URL": "http://kafka-schema-registry:8081/",
+            "KAFKA_REST_ZOOKEEPER_CONNECT": "zookeeper:2181"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
+        "id": "kafka-rest-proxy",
+        "instances": 1,
+        "mem": 128,
+        "requirePorts": true
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "confluentinc/cp-schema-registry:5.2.1-1",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 8081,
+                        "hostPort": 8081,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER"
+        },
+        "cpus": 1.0,
+        "env": {
+            "SCHEMA_REGISTRY_HOST_NAME": "kafka-schema-registry",
+            "SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL": "zookeper:2181",
+            "SCHEMA_REGISTRY_LISTENERS": "http://0.0.0.0:8081"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
+        "id": "kafka-schema-registry",
+        "instances": 1,
+        "mem": 128,
+        "requirePorts": true
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "landoop/kafka-topics-ui:0.9.4",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 8000,
+                        "hostPort": 8000,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER"
+        },
+        "cpus": 1.0,
+        "env": {
+            "KAFKA_REST_PROXY_URL": "http://kafka-rest-proxy:8082/",
+            "PROXY": "true"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
+        "id": "kafka-topics-ui",
+        "instances": 1,
+        "mem": 128,
+        "requirePorts": true
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "mysql:5.7",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 3306,
+                        "hostPort": 3306,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER",
+            "volumes": [
+                {
+                    "containerPath": "/etc/mysql/conf.d/custom.cnf",
+                    "hostPath": "./mysql.cnf",
+                    "mode": "RW"
+                },
+                {
+                    "containerPath": "/docker-entrypoint-initdb.d",
+                    "hostPath": "./dbdump",
+                    "mode": "RW"
+                }
+            ]
+        },
+        "cpus": 1.0,
+        "env": {
+            "MYSQL_DATABASE": "openmrs",
+            "MYSQL_PASSWORD": "mysqlpw",
+            "MYSQL_ROOT_HOST": "172.%",
+            "MYSQL_ROOT_PASSWORD": "debezium",
+            "MYSQL_USER": "mysqluser"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
+        "id": "mysql",
+        "instances": 1,
+        "mem": 128,
+        "requirePorts": true
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "openmrs/openmrs-reference-application-distro:2.9.0",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 8080,
+                        "hostPort": 8080,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER"
+        },
+        "cpus": 1.0,
+        "dependencies": [
+            "/mysql:mysql"
+        ],
+        "env": {
+            "DB_DATABASE": "openmrs",
+            "DB_HOST": "mysql",
+            "DB_PASSWORD": "mysqlpw",
+            "DB_USERNAME": "mysqluser"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
+        "id": "openmrs",
+        "instances": 1,
+        "mem": 128,
+        "requirePorts": true
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "portainer/portainer",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 9000,
+                        "hostPort": 9000,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER",
+            "volumes": [
+                {
+                    "containerPath": "/var/run/docker.sock",
+                    "hostPath": "/var/run/docker.sock",
+                    "mode": "RW"
+                }
+            ]
+        },
+        "cpus": 1.0,
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
+        "id": "portainer",
+        "instances": 1,
+        "mem": 128,
+        "requirePorts": true
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "landoop/schema-registry-ui:0.9.4",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 8000,
+                        "hostPort": 8001,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER"
+        },
+        "cpus": 1.0,
+        "env": {
+            "PROXY": "true",
+            "SCHEMAREGISTRY_URL": "http://kafka-schema-registry:8081/"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
+        "id": "schema-registry-ui",
+        "instances": 1,
+        "mem": 128,
+        "requirePorts": true
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "google/cadvisor:latest",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 8080,
+                        "hostPort": 9090,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER",
+            "volumes": [
+                {
+                    "containerPath": "/rootfs",
+                    "hostPath": "/",
+                    "mode": "RO"
+                },
+                {
+                    "containerPath": "/var/run",
+                    "hostPath": "/var/run",
+                    "mode": "RW"
+                },
+                {
+                    "containerPath": "/sys",
+                    "hostPath": "/sys",
+                    "mode": "RO"
+                },
+                {
+                    "containerPath": "/var/lib/docker",
+                    "hostPath": "/var/lib/docker/",
+                    "mode": "RO"
+                }
+            ]
+        },
+        "cpus": 1.0,
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
+        "id": "viz",
+        "instances": 1,
+        "mem": 128,
+        "requirePorts": true
+    },
+    {
+        "acceptedResourceRoles": [],
+        "container": {
+            "docker": {
+                "forcePullImage": true,
+                "image": "debezium/zookeeper:${DEBEZIUM_VERSION}",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 2181,
+                        "hostPort": 2181,
+                        "protocol": "tcp"
+                    },
+                    {
+                        "containerPort": 2888,
+                        "hostPort": 2888,
+                        "protocol": "tcp"
+                    },
+                    {
+                        "containerPort": 3888,
+                        "hostPort": 3888,
+                        "protocol": "tcp"
+                    }
+                ]
+            },
+            "type": "DOCKER"
+        },
+        "cpus": 1.0,
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ],
+        "id": "zookeeper",
+        "instances": 1,
+        "mem": 128,
+        "requirePorts": true
+    }
+]

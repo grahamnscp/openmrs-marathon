@@ -1,0 +1,45 @@
+{
+  "service": {
+    "name": "/dev/databases/mysql"
+  },
+  "mysql": {
+    "cpus": 1.0,
+    "mem": 1024
+  },
+  "database": {
+    "name": "openmrs",
+    "username": "mysqluser",
+    "password": "mysqlpw",
+    "root_password": "root"
+  },
+  "storage": {
+    "host_volume": "/tmp",
+    "persistence": {
+      "enable": false,
+      "volume_size": 256,
+      "external": {
+        "enable": false,
+        "volume_name": "mysql",
+        "provider": "dvdi",
+        "driver": "rexray"
+      }
+    }
+  },
+  "healthChecks": [{
+      "protocol": "HTTP",
+      "path": "/",
+      "portIndex": 0,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "maxConsecutiveFailures": 3,
+      "timeoutSeconds": 20
+  }],
+  "networking": {
+    "port": 3306,
+    "host_mode": false,
+    "external_access": {
+      "enable": false,
+      "external_access_port": 13306
+    }
+  }
+}

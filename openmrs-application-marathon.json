@@ -1,0 +1,44 @@
+{
+        "id": "/dev/dataservices/openmrs",
+        "cpus": 1.0,
+        "mem": 1024,
+        "instances": 1,
+        "acceptedResourceRoles": [
+          "*"
+        ],
+        "dependencies": [
+            "/dev/databases/mysql"
+        ],
+        "container": {
+            "type": "DOCKER",
+            "docker": {
+                "image": "openmrs/openmrs-reference-application-distro:2.9.0",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 8080,
+                        "hostPort": 0,
+                        "protocol": "tcp"
+                    }
+                ]
+            }
+        },
+        "env": {
+            "DB_DATABASE": "openmrs",
+            "DB_HOST": "devdatabasesmysql.marathon.l4lb.thisdcos.directory",
+            "DB_PASSWORD": "mysqlpw",
+            "DB_USERNAME": "mysqluser"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ]
+}

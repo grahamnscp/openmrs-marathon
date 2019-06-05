@@ -1,0 +1,48 @@
+{
+        "id": "/dev/dataservices/debezium-connect",
+        "cmd": null,
+        "cpus": 1.0,
+        "mem": 1024,
+        "disk": 0,
+        "instances": 1,
+        "acceptedResourceRoles": [
+          "*"
+        ],
+        "dependencies": [
+            "/dev/dataservices/kafka",
+            "/dev/databases/mysql"
+        ],
+        "container": {
+            "type": "DOCKER",
+            "docker": {
+                "forcePullImage": false,
+                "image": "debezium/connect:0.9.5.Final",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 8083,
+                        "hostPort": 8083,
+                        "protocol": "tcp"
+                    }
+                ]
+            }
+        },
+        "env": {
+            "BOOTSTRAP_SERVERS": "broker.devdataserviceskafka.l4lb.thisdcos.directory:9092",
+            "CONFIG_STORAGE_TOPIC": "my_connect_configs",
+            "GROUP_ID": "1",
+            "OFFSET_STORAGE_TOPIC": "my_connect_offsets"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ]
+}

@@ -1,0 +1,22 @@
+
+
+# Deploy MYSQL DCOS package with config options
+dcos package install --yes mysql --options=mysql-marathon-options.json
+
+# Deploy Kafka DCOS package with config options
+dcos package install --yes kafka --options=kafka-marathon-options.json
+
+# Deploy debezium-connect DOCKER image  service
+dcos marathon app add debezium-connect-marathon.json
+
+# Deploy openmrs-application DOCKER image service
+dcos marathon app add openmrs-application-marathon.json
+
+
+# Deploy landoop kafka-topics and schema-registry DOCKER image services
+dcos marathon app add landoop-kafka-topics-ui-marathon.json
+#? dcos marathon app add landoop-schema-registry-ui-marathon.json
+
+# Deploy confluent cp-kafka-rest api DOCKER image service
+dcos marathon app add confluentinc-cp-kafka-rest-marathon.json
+

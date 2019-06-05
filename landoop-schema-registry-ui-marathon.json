@@ -1,0 +1,38 @@
+{
+        "id": "/dev/dataservices/schema-registry-ui",
+        "cpus": 1.0,
+        "mem": 512,
+        "instances": 1,
+        "acceptedResourceRoles": [],
+        "container": {
+            "type": "DOCKER",
+            "docker": {
+                "forcePullImage": true,
+                "image": "landoop/schema-registry-ui:0.9.4",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 8000,
+                        "hostPort": 8001,
+                        "protocol": "tcp"
+                    }
+                ]
+            }
+        },
+        "env": {
+            "PROXY": "true",
+            "SCHEMAREGISTRY_URL": "http://kafka-schema-registry:8081/"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ]
+}
