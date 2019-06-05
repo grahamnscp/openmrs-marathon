@@ -18,5 +18,5 @@ dcos marathon app add landoop-kafka-topics-ui-marathon.json
 #? dcos marathon app add landoop-schema-registry-ui-marathon.json
 
 # Deploy confluent cp-kafka-rest api DOCKER image service
-dcos marathon app add confluentinc-cp-kafka-rest-marathon.json
-
+##dcos marathon app add confluentinc-cp-kafka-rest-marathon.json
+dcos package install --yes confluent-rest-proxy --options=rest-proxy-options.json

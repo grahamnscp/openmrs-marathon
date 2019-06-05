@@ -14,7 +14,6 @@
                 "portMappings": [
                     {
                         "containerPort": 8000,
-			"hostPort": 6443,
                         "protocol": "tcp"
                     }
                 ]
@@ -22,7 +21,8 @@
         },
         "env": {
             "KAFKA_REST_PROXY_URL": "http://devdataservicesrest-proxy.marathon.l4lb.thisdcos.directory:8082",
-            "PROXY": "true"
+            "PROXY": "true",
+            "PROXY_SKIP_VERIFY": "true"
         },
         "fetch": [],
         "healthChecks": [
