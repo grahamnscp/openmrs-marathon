@@ -1,0 +1,32 @@
+{
+  "rest-proxy": {
+    "name": "/dev/dataservices/rest-proxy",
+    "listener_protocol": "http",
+    "keystore_secret": "",
+    "ssl_client_auth": false,
+    "virtual_network_enabled": false,
+    "virtual_network_name": "dcos",
+    "instances": 1,
+    "cpus": 2,
+    "mem": 1024,
+    "heap": 768,
+    "role": "*",
+    "access-control-allow-methods": "",
+    "access-control-allow-origin": "",
+    "ciphers": "TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_CBC_SHA256,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_AES_256_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384"
+  },
+  "kafka": {
+    "bootstrap_servers": "broker.devdataserviceskafka.l4lb.thisdcos.directory:9092",
+    "zookeeper_connect": "master.mesos:2181/dcos-service-confluent-kafka",
+    "client_security_protocol": "PLAINTEXT",
+    "kerberos_enabled": false,
+    "client_sasl_mechanism": "GSSAPI",
+    "client_sasl_kerberos_service_name": "kafka",
+    "kerberos_keytab_secret": "__dcos_base64___keytab",
+    "kerberos_jaas_secret": "jaas",
+    "kerberos_krb5_secret": "krb5"
+  },
+  "schema-registry": {
+    "url": "http://schema-registry.marathon.l4lb.thisdcos.directory:8081"
+  }
+}

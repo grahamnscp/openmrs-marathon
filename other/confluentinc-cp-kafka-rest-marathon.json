@@ -1,0 +1,42 @@
+{
+        "id": "/dev/dataservices/kafka-rest-proxy",
+        "cpus": 1.0,
+        "mem": 512,
+        "instances": 1,
+        "acceptedResourceRoles": [
+          "*"
+        ],
+        "container": {
+            "type": "DOCKER",
+            "docker": {
+                "forcePullImage": true,
+                "image": "confluentinc/cp-kafka-rest:5.2.1-1",
+                "network": "BRIDGE",
+                "portMappings": [
+                    {
+                        "containerPort": 8082,
+                        "protocol": "tcp"
+                    }
+                ]
+            }
+        },
+        "env": {
+            "KAFKA_REST_BOOTSTRAP_SERVERS": "kafka:9092",
+            "KAFKA_REST_HOST_NAME": "kafka-rest-proxy",
+            "KAFKA_REST_LISTENERS": "http://0.0.0.0:8082/",
+            "KAFKA_REST_SCHEMA_REGISTRY_URL": "http://kafka-schema-registry:8081/",
+            "KAFKA_REST_ZOOKEEPER_CONNECT": "devdataserviceszookeeper.mesos:2181"
+        },
+        "fetch": [],
+        "healthChecks": [
+            {
+                "gracePeriodSeconds": 300,
+                "intervalSeconds": 60,
+                "maxConsecutiveFailures": 3,
+                "path": "/",
+                "portIndex": 0,
+                "protocol": "HTTP",
+                "timeoutSeconds": 20
+            }
+        ]
+}
