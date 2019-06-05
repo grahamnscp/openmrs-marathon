@@ -11,17 +11,17 @@
             "docker": {
                 "forcePullImage": true,
                 "image": "landoop/kafka-topics-ui:0.9.4",
-                "network": "BRIDGE",
                 "portMappings": [
                     {
                         "containerPort": 8000,
+			"hostPort": 6443,
                         "protocol": "tcp"
                     }
                 ]
             }
         },
         "env": {
-            "KAFKA_REST_PROXY_URL": "http://kafka-rest-proxy:8082/",
+            "KAFKA_REST_PROXY_URL": "http://devdataservicesrest-proxy.marathon.l4lb.thisdcos.directory:8082",
             "PROXY": "true"
         },
         "fetch": [],
@@ -35,5 +35,15 @@
                 "protocol": "HTTP",
                 "timeoutSeconds": 20
             }
-        ]
+        ],
+ 	"networks": [
+    	  {
+       	    "mode": "container",
+      	    "name": "dcos"
+    	  }
+        ],
+        "labels": {
+          "HAPROXY_GROUP":"external",
+          "HAPROXY_0_VHOST":"kafkatopicsui.example.com"
+        }
 }
