@@ -1,49 +1,57 @@
 {
-        "id": "/dev/dataservices/kafka-topics-ui",
-        "cpus": 1.0,
-        "mem": 512,
-        "instances": 1,
-        "acceptedResourceRoles": [
-          "*"
-        ],
-        "container": {
-            "type": "DOCKER",
-            "docker": {
-                "forcePullImage": true,
-                "image": "landoop/kafka-topics-ui:0.9.4",
-                "portMappings": [
-                    {
-                        "containerPort": 8000,
-                        "protocol": "tcp"
-                    }
-                ]
-            }
-        },
-        "env": {
-            "KAFKA_REST_PROXY_URL": "http://devdataservicesrest-proxy.marathon.l4lb.thisdcos.directory:8082",
-            "PROXY": "true",
-            "PROXY_SKIP_VERIFY": "true"
-        },
-        "fetch": [],
-        "healthChecks": [
-            {
-                "gracePeriodSeconds": 300,
-                "intervalSeconds": 60,
-                "maxConsecutiveFailures": 3,
-                "path": "/",
-                "portIndex": 0,
-                "protocol": "HTTP",
-                "timeoutSeconds": 20
-            }
-        ],
- 	"networks": [
-    	  {
-       	    "mode": "container",
-      	    "name": "dcos"
-    	  }
-        ],
-        "labels": {
-          "HAPROXY_GROUP":"external",
-          "HAPROXY_0_VHOST":"kafkatopicsui.example.com"
-        }
+  "id": "/dev/dataservices/kafka-topics-ui",
+  "cpus": 1,
+  "mem": 512,
+  "disk": 0,
+  "instances": 1,
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "fetch": [],
+  "constraints": [],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "landoop/kafka-topics-ui:0.9.4",
+      "forcePullImage": false,
+      "privileged": false,
+      "parameters": []
+    },
+    "portMappings": [
+      {
+        "containerPort": 8000,
+        "hostPort": 8000,
+        "protocol": "tcp"
+      }
+    ],
+    "volumes": []
+  },
+  "env": {
+    "KAFKA_REST_PROXY_URL": "http://devdataservicesrest-proxy.marathon.l4lb.thisdcos.directory:8082",
+    "PROXY": "true",
+    "PROXY_SKIP_VERIFY": "true"
+  },
+  "healthChecks": [
+    {
+      "gracePeriodSeconds": 10,
+      "ignoreHttp1xx": false,
+      "intervalSeconds": 5,
+      "maxConsecutiveFailures": 10,
+      "portIndex": 0,
+      "timeoutSeconds": 10,
+      "delaySeconds": 15,
+      "protocol": "HTTP",
+      "path": "/",
+      "ipProtocol": "IPv4"
+    }
+  ],
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "labels": {
+    "HAPROXY_0_VHOST": "kafkatopicsui.example.com",
+    "HAPROXY_GROUP": "external"
+  }
 }
