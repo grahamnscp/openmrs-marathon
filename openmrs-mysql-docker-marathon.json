@@ -22,7 +22,7 @@
     "type": "DOCKER",
     "volumes": [],
     "docker": {
-      "image": "grahamh/openmrs-mysql:1.0",
+      "image": "grahamh/openmrs-mysql:2.0",
       "forcePullImage": false,
       "privileged": false,
       "parameters": []

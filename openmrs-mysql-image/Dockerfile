@@ -12,6 +12,8 @@ ENV MYSQL_USER=mysqluser
 ENV MYSQL_PASSWORD=mysqlpw
 ENV MYSQL_ROOT_PASSWORD=root
 
+COPY mysqld.cnf /etc/mysql/conf.d/mysqld.cnf
+
 ADD debezium.sql /etc/mysql/debezium.sql
 ADD demo.sql /etc/mysql/demo.sql
 
