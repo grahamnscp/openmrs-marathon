@@ -19,11 +19,14 @@
                 "image": "debezium/connect:0.9.5.Final",
                 "network": "BRIDGE",
                 "portMappings": [
-                    {
-                        "containerPort": 8083,
-                        "hostPort": 8083,
-                        "protocol": "tcp"
-                    }
+                  {
+                    "containerPort": 8083,
+                    "hostPort": 8083,
+                    "labels": {
+                      "VIP_0": "/dev/dataservices/debezium-connect:8083"
+                    },
+                    "protocol": "tcp"
+                  }
                 ]
             }
         },

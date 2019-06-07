@@ -18,7 +18,10 @@
                     {
                         "containerPort": 8080,
                         "hostPort": 0,
-                        "protocol": "tcp"
+                        "protocol": "tcp",
+                        "labels": {
+                          "VIP_0": "/dev/dataservices/openmrs:8080"
+                        }
                     }
                 ]
             }
@@ -40,5 +43,9 @@
                 "protocol": "HTTP",
                 "timeoutSeconds": 20
             }
-        ]
+        ],
+        "labels": {
+          "HAPROXY_GROUP": "external",
+          "HAPROXY_0_VHOST": "openmrs.example.com"
+        }
 }
