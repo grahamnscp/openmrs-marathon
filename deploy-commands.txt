@@ -1,7 +1,8 @@
 
 
 # Deploy MYSQL DCOS package with config options
-dcos package install --yes mysql --options=mysql-marathon-options.json
+#dcos package install --yes mysql --options=mysql-marathon-options.json
+dcos marathon app add openmrs-mysql-docker-marathon.json
 
 # Deploy Kafka DCOS package with config options
 dcos package install --yes kafka --options=kafka-marathon-options.json
@@ -20,3 +21,9 @@ dcos marathon app add landoop-kafka-topics-ui-marathon.json
 # Deploy confluent cp-kafka-rest api DOCKER image service
 ##dcos marathon app add confluentinc-cp-kafka-rest-marathon.json
 dcos package install --yes confluent-rest-proxy --options=rest-proxy-options.json
+
+
+Aside:
+Docker image to build sample mysql database: openmrs-mysql-image
+Docker image for golang web app to insert new user entries into mysql db: data-entry-app-image
+unused component files: other

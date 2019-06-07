@@ -1,3 +1,0 @@
-"name":     "openmrs"
-"username": "mysqluser"
-"password": "mysqlpw"
