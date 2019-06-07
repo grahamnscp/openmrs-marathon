@@ -1,0 +1,45 @@
+{
+  "id": "/dev/databases/mysql",
+  "cpus": 1,
+  "mem": 1024,
+  "disk": 0,
+  "gpus": 0,
+  "instances": 1,
+  "acceptedResourceRoles": [
+    "*"
+  ],
+  "container": {
+    "portMappings": [
+      {
+        "containerPort": 3306,
+        "protocol": "tcp",
+        "hostPort": 0,
+        "labels": {
+          "VIP_0": "/dev/databases/mysql:3306"
+        }
+      }
+    ],
+    "type": "DOCKER",
+    "volumes": [],
+    "docker": {
+      "image": "grahamh/openmrs-mysql:1.0",
+      "forcePullImage": false,
+      "privileged": false,
+      "parameters": []
+    }
+  },
+  "env": {
+    "MYSQL_USER": "mysqluser",
+    "MYSQL_PASSWORD": "mysqlpw",
+    "MYSQL_DATABASE": "openmrs",
+    "MYSQL_ROOT_PASSWORD": "debezium"
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "healthChecks": [],
+  "fetch": [],
+  "constraints": []
+}

@@ -1,0 +1,20 @@
+FROM alpine:latest
+
+ARG MYSQL_HOST
+ARG MYSQL_DATABASE
+ARG MYSQL_USER
+ARG MYSQL_PASSWORD
+ARG MYSQL_ROOT_PASSWORD
+
+ENV MYSQL_HOST=10.10.10.7
+ENV MYSQL_DATABASE=openmrs
+ENV MYSQL_USER=mysqluser
+ENV MYSQL_PASSWORD=mysqlpw
+ENV MYSQL_ROOT_PASSWORD=root
+
+RUN apk add mysql-client
+
+COPY load-users.* /
+
+CMD ["/load-users.sh"]
+
