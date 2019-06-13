@@ -1,4 +1,7 @@
 
+# deploy Maration-LB for simple ingress
+dcos package install --yes marathon-lb
+
 
 # Deploy MYSQL DCOS package with config options
 #dcos package install --yes mysql --options=mysql-marathon-options.json
@@ -13,17 +16,34 @@ dcos marathon app add debezium-connect-marathon.json
 # Deploy openmrs-application DOCKER image service
 dcos marathon app add openmrs-application-marathon.json
 
-
-# Deploy landoop kafka-topics and schema-registry DOCKER image services
+# Deploy landoop kafka-topics ui DOCKER image service
 dcos marathon app add landoop-kafka-topics-ui-marathon.json
-#? dcos marathon app add landoop-schema-registry-ui-marathon.json
 
 # Deploy confluent cp-kafka-rest api DOCKER image service
 ##dcos marathon app add confluentinc-cp-kafka-rest-marathon.json
 dcos package install --yes confluent-rest-proxy --options=rest-proxy-options.json
 
+# Need to 'switch-on' / 'register' openmrs-debezium connector
+dcos marathon app add register-openmrs-marathon.json
+dcos task exec -it <register-openmrs task id> bash
+ bash# cd /
+ bash# ./register-mysql.sh
+ bash# exit
+
+# show kafka topics from cli
+dcos package install kafka --cli
+dcos kafka update package-versions --name=prod/dataservices/kafka
+dcos kafka topic list --name=/dev/dataservices/kafka
+
+
+# Consume side:
+# Deploy ksql-server (no non-interactive sql file specified) ksql client works inside if execed to
+dcos marathon app add ksql-server-marathon.json
+
+
 
 Aside:
 Docker image to build sample mysql database: openmrs-mysql-image
 Docker image for golang web app to insert new user entries into mysql db: data-entry-app-image
+Docker image to spin up an Apline linux instance that can be connected to and used to curl, mysql etc
 unused component files: other
