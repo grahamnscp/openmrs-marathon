@@ -1,4 +1,4 @@
 # openmrs-marathon
 working repo for building openmrs sample on DC/OS
 
-hacked from https://github.com/devmikey/openmrs-etl
+hacked by request from https://github.com/devmikey/openmrs-etl
