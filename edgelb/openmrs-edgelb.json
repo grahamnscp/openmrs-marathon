@@ -1,0 +1,58 @@
+{
+  "apiVersion": "V2",
+  "name": "openmrs",
+  "count": 1,
+  "autoCertificate": true,
+  "haproxy": {
+    "frontends": [{
+        "bindPort": 80,
+        "protocol": "HTTP",
+        "linkBackend": {
+          "map": [
+          {
+            "hostEq": "openmrs.example.com",
+            "backend": "openmrs-backend"
+          }
+          ]
+        }
+      },
+      {
+        "bindPort": 443,
+        "protocol": "HTTPS",
+        "certificates": [
+          "$AUTOCERT"
+        ],
+        "linkBackend": {
+          "map": [{
+            "hostEq": "openmrs.example.com",
+            "backend": "openmrs-ssl-backend"
+          }]
+        }
+      }
+    ],
+    "backends": [{
+      "name": "openmrs-backend",
+      "protocol": "HTTP",
+      "services": [{
+        "marathon": {
+          "serviceID": "/dev/dataservices/openmrs"
+        },
+        "endpoint": {
+          "portName": "openmrsweb"
+        }
+      }]
+    },
+    {
+      "name": "openmrs-ssl-backend",
+      "protocol": "HTTPS",
+      "services": [{
+        "marathon": {
+          "serviceID": "/dev/dataservices/openmrs"
+        },
+        "endpoint": {
+          "portName": "openmrsweb"
+        }
+      }]
+    }]
+  }
+}

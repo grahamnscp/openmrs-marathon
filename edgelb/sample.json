@@ -1,0 +1,26 @@
+{
+  "apiVersion": "V2",
+  "name": "sample",
+  "count": 1,
+  "haproxy": {
+    "frontends": [{
+      "bindPort": 80,
+      "protocol": "HTTP",
+      "linkBackend": {
+        "defaultBackend": "ping-backend"
+      }
+    }],
+    "backends": [{
+      "name": "ping-backend",
+      "protocol": "HTTP",
+      "services": [{
+        "marathon": {
+          "serviceID": "/ping"
+        },
+        "endpoint": {
+          "portName": "pong"
+        }
+      }]
+    }]
+  }
+}

@@ -21,7 +21,11 @@
       {
         "containerPort": 8000,
         "hostPort": 8000,
-        "protocol": "tcp"
+        "protocol": "tcp",
+        "name": "ktopicuiweb",
+        "labels": {
+          "VIP_0": "/dev/dataservices/kafka-topics-ui:8000"
+        }
       }
     ],
     "volumes": []

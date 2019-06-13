@@ -19,6 +19,7 @@
                         "containerPort": 8080,
                         "hostPort": 0,
                         "protocol": "tcp",
+                        "name": "openmrsweb",
                         "labels": {
                           "VIP_0": "/dev/dataservices/openmrs:8080"
                         }

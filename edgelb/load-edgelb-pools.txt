@@ -1,0 +1,9 @@
+# docs: https://docs.mesosphere.com/services/edge-lb/1.3/pool-configuration/v2-examples/
+
+# Openmrs application ingress
+dcos edgelb create openmrs-edgelb.json
+
+dcos edgelb show openmrs
+dcos edgelb status openmrs
+dcos edgelb lb-config openmrs
+
