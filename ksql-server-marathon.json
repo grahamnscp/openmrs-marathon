@@ -1,0 +1,58 @@
+{
+  "id": "/dev/dataservices/ksql-server",
+  "cpus": 2,
+  "mem": 5120,
+  "disk": 0,
+  "gpus": 0,
+  "instances": 1,
+  "maxLaunchDelaySeconds": 300,
+  "container": {
+    "portMappings": [
+      {
+        "containerPort": 8088,
+        "hostPort": 0,
+        "labels": {
+          "VIP_0": "/dev/dataservices/ksql-server:8088"
+        },
+        "protocol": "tcp"
+      }
+    ],
+    "type": "MESOS",
+    "volumes": [],
+    "docker": {
+      "image": "confluentinc/cp-ksql-server:5.2.1-1",
+      "forcePullImage": false,
+      "parameters": []
+    }
+  },
+  "networks": [
+    {
+      "name": "dcos",
+      "mode": "container"
+    }
+  ],
+  "requirePorts": false,
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  },
+  "killSelection": "YOUNGEST_FIRST",
+  "unreachableStrategy": {
+    "inactiveAfterSeconds": 0,
+    "expungeAfterSeconds": 0
+  },
+  "_comment": "ref: https://docs.confluent.io/current/ksql/docs/installation/install-ksql-with-docker.html#install-ksql-with-docker",
+  "_comment": "ref: https://docs.confluent.io/current/ksql/docs/installation/server-config/index.html",
+  "env": {
+    "KSQL_BOOTSTRAP_SERVERS": "broker.devdataserviceskafka.l4lb.thisdcos.directory:9092",
+    "KSQL_LISTENERS": "http://0.0.0.0:8088",
+    "KSQL_KSQL_SERVICE_ID": "ksvr-1",
+    "KSQL_OPTS": "-Dksql.streams.auto.offset.reset=earliest -Dksql.streams.num.streams.threads=1",
+    "KSQL_HEAP_OPTS": "-Xms2G -Xmx2G",
+    "KSQL_JVM_PERFORMANCE_OPTS": "-server -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+ExplicitGCInvokesConcurrent -Djava.awt.headless=true",
+    "KSQL_CLASSPATH": "/usr/share/java/cp-base-new/*:/usr/share/java/ksql-server/*"
+  }, 
+  "healthChecks": [],
+  "fetch": [],
+  "constraints": []
+}

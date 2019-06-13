@@ -46,6 +46,6 @@
         ],
         "labels": {
           "HAPROXY_GROUP": "external",
-          "HAPROXY_0_VHOST": "openmrs.example.com"
+          "HAPROXY_0_VHOST": "openmrs-test.example.com"
         }
 }

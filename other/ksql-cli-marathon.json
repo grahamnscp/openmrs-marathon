@@ -1,0 +1,52 @@
+{
+  "id": "/dev/dataservices/ksql-cli",
+  "cpus": 2,
+  "mem": 5120,
+  "disk": 0,
+  "gpus": 0,
+  "instances": 1,
+  "maxLaunchDelaySeconds": 300,
+  "container": {
+    "portMappings": [
+      {
+        "containerPort": 8088,
+        "hostPort": 0,
+        "labels": {
+          "VIP_0": "/dev/dataservices/ksql-cli:8088"
+        },
+        "protocol": "tcp"
+      }
+    ],
+    "type": "MESOS",
+    "volumes": [],
+    "docker": {
+      "image": "confluentinc/cp-ksql-cli:5.2.1-1",
+      "forcePullImage": false,
+      "parameters": []
+    }
+  },
+  "networks": [
+    {
+      "name": "dcos",
+      "mode": "container"
+    }
+  ],
+  "requirePorts": false,
+  "upgradeStrategy": {
+    "maximumOverCapacity": 1,
+    "minimumHealthCapacity": 1
+  },
+  "killSelection": "YOUNGEST_FIRST",
+  "unreachableStrategy": {
+    "inactiveAfterSeconds": 0,
+    "expungeAfterSeconds": 0
+  },
+  "_comment": "ref: https://docs.confluent.io/current/installation/docker/config-reference.html#ksql-cli",
+  "env": {
+    "KSQL_BOOTSTRAP_SERVERS": "broker.devdataserviceskafka.l4lb.thisdcos.directory:9092",
+    "KSQL_LISTENERS": "http://devdataservicesksql-server.marathon.l4lb.thisdcos.directory:8088"
+  }, 
+  "healthChecks": [],
+  "fetch": [],
+  "constraints": []
+}
